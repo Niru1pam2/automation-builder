@@ -42,7 +42,10 @@ export default function NavMenu({
                 href={item.url}
                 className={`${pathname.includes(item.url) && "font-bold"}`}
               >
-                <item.icon className="text-lg" />
+                <item.icon
+                  className="text-lg"
+                  strokeWidth={`${pathname.includes(item.url) ? 3 : 2}`}
+                />
                 <span>{item.title}</span>
               </Link>
             </SidebarMenuButton>

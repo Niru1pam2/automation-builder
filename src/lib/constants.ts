@@ -27,11 +27,6 @@ export const data = {
       icon: WorkflowIcon,
     },
     {
-      title: "Settings",
-      url: "/settings",
-      icon: Settings,
-    },
-    {
       title: "Connections",
       url: "/connections",
       icon: BluetoothConnected,
