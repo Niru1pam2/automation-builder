@@ -1,12 +1,12 @@
 import {
-  BluetoothConnected,
-  BookTemplate,
-  Home,
-  LogsIcon,
-  Notebook,
-  Settings,
-  WorkflowIcon,
+  CreditCard,
+  Layers,
+  LayoutDashboard,
+  Plug,
+  ScrollText,
+  Workflow,
 } from "lucide-react";
+import { Connection } from "./types";
 
 export const data = {
   user: {
@@ -19,32 +19,65 @@ export const data = {
     {
       title: "Home",
       url: "/dashboard",
-      icon: Home,
+      icon: LayoutDashboard,
     },
     {
       title: "Workflows",
       url: "/workflows",
-      icon: WorkflowIcon,
+      icon: Workflow,
     },
     {
       title: "Connections",
       url: "/connections",
-      icon: BluetoothConnected,
+      icon: Plug,
     },
     {
       title: "Billing",
       url: "/billing",
-      icon: Notebook,
+      icon: CreditCard,
     },
     {
       title: "Templates",
       url: "/templates",
-      icon: BookTemplate,
+      icon: Layers,
     },
     {
       title: "Logs",
       url: "/logs",
-      icon: LogsIcon,
+      icon: ScrollText,
     },
   ],
 };
+
+export const CONNECTIONS: Connection[] = [
+  {
+    title: "Google Drive",
+    description: "Connect your google drive to listen to folder changes",
+    image: "/googleDrive.png",
+    connectionKey: "googleNode",
+    alwaysTrue: true,
+  },
+  {
+    title: "Discord",
+    description: "Connect your discord to send notification and messages",
+    image: "/discord.png",
+    connectionKey: "discordNode",
+    accessTokenKey: "webhookURL",
+  },
+  {
+    title: "Notion",
+    description: "Create entries in your notion dashboard and automate tasks.",
+    image: "/notion.png",
+    connectionKey: "notionNode",
+    accessTokenKey: "accessToken",
+  },
+  {
+    title: "Slack",
+    description:
+      "Use slack to send notifications to team members through your own custom bot.",
+    image: "/slack.png",
+    connectionKey: "slackNode",
+    accessTokenKey: "slackAccessToken",
+    slackSpecial: true,
+  },
+];

@@ -3,6 +3,7 @@ import { Poppins, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
+import ModalProvder from "@/providers/modal-provider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -39,7 +40,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <ModalProvder>{children}</ModalProvder>
           </ThemeProvider>
         </body>
       </html>
