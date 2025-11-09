@@ -40,7 +40,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <ModalProvder>{children}</ModalProvder>
+            {children}
           </ThemeProvider>
         </body>
       </html>
