@@ -10,8 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "lucide-react";
 import clsx from "clsx";
+import { Badge } from "@/components/ui/badge";
 
 export default function EditorCanvasCardSingle({
   data,
@@ -20,6 +20,7 @@ export default function EditorCanvasCardSingle({
 }) {
   const { dispatch, state } = useEditor();
   const nodeId = useNodeId();
+
   const logo = useMemo(
     () => <EditorCanvasIconHelper type={data.type} />,
     [data]
@@ -27,6 +28,7 @@ export default function EditorCanvasCardSingle({
 
   return (
     <>
+      {/* Top handle for connections */}
       {data.type !== "Trigger" && data.type !== "Google Drive" && (
         <CustomHandle
           type="target"
@@ -42,36 +44,53 @@ export default function EditorCanvasCardSingle({
           if (val) {
             dispatch({
               type: "SELECTED_ELEMENT",
-              payload: {
-                element: val,
-              },
+              payload: { element: val },
             });
           }
         }}
-        className="relative max-w-10 dark:border-muted-foreground/70"
+        className={clsx(
+          "relative w-[260px] cursor-pointer rounded-xl border border-border bg-background shadow-sm transition-all",
+          "hover:shadow-md dark:border-neutral-700 dark:bg-neutral-900"
+        )}
       >
-        <CardHeader className="flex flex-row items-center gap-4">
-          <div>{logo}</div>
-          <div>
-            <CardTitle className="text-md">{data.title}</CardTitle>
-            <CardDescription>
-              <p className="text-xs text-muted-foreground/50">
-                <b className="text-muted-foreground/80">ID: </b>
-                {nodeId}
+        <CardHeader className="flex items-start gap-3 p-4">
+          <div className="flex-shrink-0">{logo}</div>
+          <div className="flex flex-col">
+            <CardTitle className="text-base font-semibold">
+              {data.title}
+            </CardTitle>
+            <CardDescription className="text-xs text-muted-foreground">
+              <span className="font-medium text-muted-foreground/70">ID:</span>{" "}
+              {nodeId}
+              <p className="mt-1 text-xs text-muted-foreground/60">
+                {data.description}
               </p>
-              <p>{data.description}</p>
             </CardDescription>
           </div>
         </CardHeader>
-        <Badge className="absolute right-2 top-2">{data.type}</Badge>
+
+        {/* Node type badge */}
+        <Badge
+          variant="secondary"
+          className="absolute right-2 top-2 text-[10px] font-medium"
+        >
+          {data.type}
+        </Badge>
+
+        {/* Status indicator dot */}
         <div
-          className={clsx("absolute left-3 top-4 h-2 w-2 rounded-full", {
-            "bg-green-500": Math.random() < 0.6,
-            "bg-orange-500": Math.random() >= 0.6 && Math.random() < 0.8,
-            "bg-red-500": Math.random() >= 0.8,
-          })}
-        ></div>
+          className={clsx(
+            "absolute left-2 top-2 h-2.5 w-2.5 rounded-full shadow-sm",
+            {
+              "bg-green-500": Math.random() < 0.6,
+              "bg-orange-500": Math.random() >= 0.6 && Math.random() < 0.8,
+              "bg-red-500": Math.random() >= 0.8,
+            }
+          )}
+        />
       </Card>
+
+      {/* Bottom handle */}
       <CustomHandle type="source" position={Position.Bottom} id="a" />
     </>
   );
