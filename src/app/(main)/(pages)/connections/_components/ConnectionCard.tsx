@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardDescription,
@@ -29,42 +30,43 @@ export default function ConnectionCard({
   //connections
   return (
     <Card className="flex w-full items-center justify-between">
-      <CardHeader className="flex flex-col gap-4 w-full">
-        <div className="flex flex-row gap-2">
-          <Image
-            src={icon}
-            alt={title}
-            height={30}
-            width={30}
-            className="object-contain"
-          />
-        </div>
-        <div className="flex flex-col">
-          <CardTitle className="text-lg">{title}</CardTitle>
-          <CardDescription>{description}</CardDescription>
-        </div>
-      </CardHeader>
-      <div className="flex flex-col items-center gap-2 p-4">
-        {/* {connected[type] ? (
-          <div className="border bg-primary rounded-lg border-2 px-3 py-2 font-bold text-white">
-            Connected
+      <div className="flex items-center justify-between w-full">
+        <CardHeader className="flex flex-col gap-4 w-full">
+          <div className="flex flex-row gap-2">
+            <Image
+              src={icon}
+              alt={title}
+              height={30}
+              width={30}
+              className="object-contain"
+            />
           </div>
-        ) : ( */}
-        <Link
-          href={
-            title == "Discord"
-              ? process.env.NEXT_PUBLIC_DISCORD_REDIRECT
-              : title == "Notion"
-              ? process.env.NEXT_PUBLIC_NOTION_AUTH_URL
-              : title == "Slack"
-              ? process.env.NEXT_PUBLIC_SLACK_REDIRECT
-              : "#"
-          }
-          className="rounded-lg bg-primary p-2 font-bold text-primary-foreground"
-        >
-          Connect
-        </Link>
-        {/* )} */}
+          <div className="flex flex-col">
+            <CardTitle className="text-lg">{title}</CardTitle>
+            <CardDescription>{description}</CardDescription>
+          </div>
+        </CardHeader>
+
+        <div className="flex flex-col items-center gap-2 p-4">
+          {connected[type] ? (
+            <Button disabled={true}>Connected</Button>
+          ) : (
+            <Link
+              href={
+                title == "Discord"
+                  ? process.env.NEXT_PUBLIC_DISCORD_REDIRECT!
+                  : title == "Notion"
+                  ? process.env.NEXT_PUBLIC_NOTION_AUTH_URL!
+                  : title == "Slack"
+                  ? process.env.NEXT_PUBLIC_SLACK_REDIRECT!
+                  : "#"
+              }
+              className={buttonVariants({})}
+            >
+              Connect
+            </Link>
+          )}
+        </div>
       </div>
     </Card>
   );

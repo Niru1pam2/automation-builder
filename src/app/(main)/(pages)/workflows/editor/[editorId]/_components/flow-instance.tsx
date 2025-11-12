@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useNodeConnections } from "@/providers/connections-provider";
 import { usePathname } from "next/navigation";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   onCreateNodeEdges,
   onFlowPublish,
@@ -42,6 +42,24 @@ export default function FlowInstance({ children, edges, nodes }: Props) {
       });
     }
   };
+
+  const onAutomateFlow = async () => {
+    const flows: any = [];
+    const connectedEdges = edges.map((edge) => edge.target);
+    connectedEdges.map((target) => {
+      nodes.forEach((node) => {
+        if (node.id === target) {
+          flows.push(node.type);
+        }
+      });
+    });
+
+    setIsFlow(flows);
+  };
+
+  useEffect(() => {
+    onAutomateFlow();
+  }, [edges]);
 
   return (
     <div className="flex flex-col gap-2">

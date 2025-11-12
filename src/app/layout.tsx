@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import { Poppins, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
-import ModalProvder from "@/providers/modal-provider";
+import type { Metadata } from "next";
+import { Geist_Mono, Poppins } from "next/font/google";
+import "./globals.css";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -42,6 +42,7 @@ export default function RootLayout({
           >
             {children}
           </ThemeProvider>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

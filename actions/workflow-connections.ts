@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
 
 export const onCreateNodeEdges = async (
   flowId: string,
@@ -38,4 +39,21 @@ export const onFlowPublish = async (workflowId: string, state: boolean) => {
 
   if (published.publish) return "Workflow Published";
   return "Workflow Unpublished";
+};
+
+export const getGoogleListener = async () => {
+  const { userId } = await auth();
+
+  if (userId) {
+    const listener = await prisma.user.findUnique({
+      where: {
+        clerkId: userId,
+      },
+      select: {
+        googleResourceId: true,
+      },
+    });
+
+    if (listener) return listener;
+  }
 };
