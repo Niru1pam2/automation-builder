@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
   Card,
   CardDescription,
@@ -8,12 +10,14 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
 import Link from "next/link";
+import { onFlowPublish } from "../../../../../../actions/workflow-connections";
+import { toast } from "sonner";
 
 type Props = {
   name: string;
   description: string;
   id: string;
-  publish: boolean | null;
+  publish: boolean;
 };
 
 export default function WorkflowCard({
@@ -22,6 +26,13 @@ export default function WorkflowCard({
   name,
   publish,
 }: Props) {
+  const onPublishFlow = async (event: any) => {
+    const response = await onFlowPublish(
+      id,
+      event.target.ariaChecked === "false"
+    );
+    if (response) toast.message(response);
+  };
   return (
     <Card className="w-full">
       <div className="flex items-center justify-between">
@@ -61,10 +72,12 @@ export default function WorkflowCard({
         </CardHeader>
 
         <div className="flex flex-col items-center gap-2 p-4 pr-6">
-          <Label htmlFor={`switch-${id}`} className="text-muted-foreground">
-            {publish ? "On" : "Off"}
-          </Label>
-          <Switch id={`switch-${id}`} defaultChecked={publish ?? false} />
+          <Label htmlFor="airplane-mode">{publish ? "On" : "Off"}</Label>
+          <Switch
+            id="airplane-mode"
+            onClick={onPublishFlow}
+            defaultChecked={publish}
+          />
         </div>
       </div>
     </Card>

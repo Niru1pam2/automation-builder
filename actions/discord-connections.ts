@@ -1,6 +1,8 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { currentUser } from "@clerk/nextjs/server";
+import axios from "axios";
 
 export const onDiscordConnect = async (
   channel_id: string,
@@ -87,4 +89,38 @@ export const onDiscordConnect = async (
       }
     }
   }
+};
+
+export const getDiscordConnectionUrl = async () => {
+  const user = await currentUser();
+
+  if (user) {
+    const webhhok = await prisma.discordWebhook.findFirst({
+      where: {
+        userId: user.id,
+      },
+      select: {
+        url: true,
+        name: true,
+        guildName: true,
+      },
+    });
+
+    return webhhok;
+  }
+};
+
+export const postContentToWebhook = async (content: string, url: string) => {
+  console.log(content);
+
+  if (content != "") {
+    const posted = await axios.post(url, { content });
+
+    if (posted) {
+      return { message: "success" };
+    }
+    return { message: "failed request" };
+  }
+
+  return { message: "string empty" };
 };

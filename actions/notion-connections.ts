@@ -1,4 +1,8 @@
+"use server";
+
 import prisma from "@/lib/prisma";
+import { currentUser } from "@clerk/nextjs/server";
+import { Client } from "@notionhq/client";
 
 export const onNotionConnect = async (
   access_token: string,
@@ -8,7 +12,6 @@ export const onNotionConnect = async (
   database_id: string,
   id: string
 ) => {
-  "use server";
   if (access_token) {
     //check if notion is connected
     const notion_connected = await prisma.notion.findFirst({
@@ -43,5 +46,66 @@ export const onNotionConnect = async (
         },
       });
     }
+  }
+};
+
+export const getNotionConnection = async () => {
+  const user = await currentUser();
+
+  if (user) {
+    const connection = await prisma.notion.findFirst({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    if (connection) {
+      return connection;
+    }
+  }
+};
+
+export const getNotionDatabase = async (
+  databaseId: string,
+  accessToken: string
+) => {
+  const notion = new Client({
+    auth: accessToken,
+  });
+
+  const response = await notion.databases.retrieve({ database_id: databaseId });
+  return response;
+};
+
+export const onCreateNewPageInDatabase = async (
+  databaseId: string,
+  accessToken: string,
+  content: string
+) => {
+  const notion = new Client({
+    auth: accessToken,
+  });
+
+  console.log(databaseId);
+  const response = await notion.pages.create({
+    parent: {
+      type: "database_id",
+      database_id: databaseId,
+    },
+    properties: {
+      title: {
+        title: [
+          {
+            type: "text",
+            text: {
+              content: content,
+            },
+          },
+        ],
+      },
+    },
+  });
+  if (response) {
+    return response;
   }
 };

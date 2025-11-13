@@ -58,24 +58,20 @@ export default function ContentBasedOnTitle({
 
   const isConnected =
     title === "Google Drive"
-      ? nodeConnection.isLoading
-      : (() => {
-          const key =
+      ? !nodeConnection.isLoading
+      : !!nodeConnectionType[
+          `${
             title === "Slack"
               ? "slackAccessToken"
               : title === "Discord"
               ? "webhookURL"
               : title === "Notion"
               ? "accessToken"
-              : "";
-          return key &&
-            typeof nodeConnectionType === "object" &&
-            key in nodeConnectionType
-            ? !!nodeConnectionType[key as keyof typeof nodeConnectionType]
-            : false;
-        })();
+              : ""
+          }`
+        ];
 
-  // if (!isConnected) return <p>Not connected</p>;
+  if (!isConnected) return <p>Not connected</p>;
 
   return (
     <AccordionContent>

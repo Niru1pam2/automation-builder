@@ -1,3 +1,4 @@
+"use client";
 import WorkflowCard from "./WorkflowCard";
 
 export default function Workflows() {

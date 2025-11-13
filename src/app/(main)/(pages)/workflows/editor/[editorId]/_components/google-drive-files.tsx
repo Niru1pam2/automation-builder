@@ -55,7 +55,7 @@ export default function GoogleDriveFiles() {
               <LoaderOne />
             </div>
           ) : (
-            "Create Listener"
+            <p className="truncate">Create Listener</p>
           )}
         </Button>
       )}
