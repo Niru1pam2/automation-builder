@@ -2,7 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { Option } from "@/store";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 export const onCreateNodeEdges = async (
   flowId: string,
@@ -156,5 +156,37 @@ export const onCreateNodeTemplate = async (
     });
 
     if (response) return "Notion template saved";
+  }
+};
+
+export const onGetWorkflows = async () => {
+  const user = await currentUser();
+
+  if (user) {
+    const workflows = await prisma.workflows.findMany({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    if (workflows) return workflows;
+  }
+};
+
+export const onCreateWorkflow = async (name: string, description: string) => {
+  const user = await currentUser();
+
+  if (user) {
+    const workflow = await prisma.workflows.create({
+      data: {
+        userId: user.id,
+        name: name,
+        description: description,
+      },
+    });
+
+    if (workflow) return { message: "Workflow created" };
+
+    return { message: "Oops! Try again!" };
   }
 };

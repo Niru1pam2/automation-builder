@@ -10,10 +10,7 @@ export async function GET(req: NextRequest) {
     data.append("client_id", process.env.DISCORD_CLIENT_ID!);
     data.append("client_secret", process.env.DISCORD_CLIENT_SECRET!);
     data.append("grant_type", "authorization_code");
-    data.append(
-      "redirect_uri",
-      "https://localhost:3000/api/auth/callback/discord"
-    );
+    data.append("redirect_uri", process.env.DISCORD_REDIRECT_URI!);
     data.append("code", code.toString());
 
     const output = await axios.post(
@@ -42,10 +39,10 @@ export async function GET(req: NextRequest) {
       );
 
       return NextResponse.redirect(
-        `https://localhost:3000/connections?webhook_id=${output.data.webhook.id}&webhook_url=${output.data.webhook.url}&webhook_name=${output.data.webhook.name}&guild_id=${output.data.webhook.guild_id}&guild_name=${UserGuild[0].name}&channel_id=${output.data.webhook.channel_id}`
+        `http://localhost:3000/connections?webhook_id=${output.data.webhook.id}&webhook_url=${output.data.webhook.url}&webhook_name=${output.data.webhook.name}&guild_id=${output.data.webhook.guild_id}&guild_name=${UserGuild[0].name}&channel_id=${output.data.webhook.channel_id}`
       );
     }
 
-    return NextResponse.redirect("https://localhost:3000/connections");
+    return NextResponse.redirect("http://localhost:3000/connections");
   }
 }
