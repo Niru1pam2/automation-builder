@@ -41,7 +41,7 @@ export default function EditorCanvasSidebar({ nodes }: Props) {
     if (state) {
       onConnections(nodeConnection, state, googleFile);
     }
-  }, []);
+  }, [googleFile, state]);
 
   useEffect(() => {
     if (nodeConnection.slackNode.slackAccessToken) {
@@ -50,7 +50,7 @@ export default function EditorCanvasSidebar({ nodes }: Props) {
         setSlackChannels
       );
     }
-  }, [nodeConnection]);
+  }, [nodeConnection, setSlackChannels]);
 
   return (
     <aside>

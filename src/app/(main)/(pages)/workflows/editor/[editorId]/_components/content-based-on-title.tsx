@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
 import { AccordionContent } from "@/components/ui/accordion";
 import {
   Card,
@@ -88,7 +90,7 @@ export default function ContentBasedOnTitle({
 
           <Input
             type="text"
-            value={nodeConnectionType.content}
+            value={nodeConnectionType.content || ""}
             onChange={(event) => onContentChange(nodeConnection, title, event)}
           />
 

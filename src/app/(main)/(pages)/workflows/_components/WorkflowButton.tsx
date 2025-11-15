@@ -26,10 +26,11 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { onCreateWorkflow } from "../../../../../../actions/workflow-connections";
+import { useState } from "react";
 
 export default function WorkflowButton() {
+  const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof WorkflowFormSchema>>({
-    mode: "onChange",
     resolver: zodResolver(WorkflowFormSchema),
     defaultValues: {
       name: "asd",
@@ -38,21 +39,22 @@ export default function WorkflowButton() {
   });
 
   async function handleSubmit(values: z.infer<typeof WorkflowFormSchema>) {
-    // const workflow = await onCreateWorkflow(values.name, values.description);
-    // if (workflow) {
-    //   toast.success(workflow.message);
-    //   form.reset();
-    //   router.refresh();
-    // }
-
-    console.log(values.description, values.description);
+    const name = form.getValues().name;
+    const description = form.getValues().description;
+    const workflow = await onCreateWorkflow(name, description);
+    if (workflow) {
+      toast.success(workflow.message);
+      form.reset();
+      setOpen(false);
+      router.refresh();
+    }
   }
 
   const isLoading = form.formState.isSubmitting;
   const router = useRouter();
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
           <PlusIcon className="size-4" />
