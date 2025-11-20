@@ -27,14 +27,16 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { onCreateWorkflow } from "../../../../../../actions/workflow-connections";
 import { useState } from "react";
+import { useBilling } from "@/providers/billing-provider";
 
 export default function WorkflowButton() {
+  const { credits } = useBilling();
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof WorkflowFormSchema>>({
     resolver: zodResolver(WorkflowFormSchema),
     defaultValues: {
-      name: "asd",
-      description: "asd",
+      name: "",
+      description: "",
     },
   });
 
@@ -55,7 +57,7 @@ export default function WorkflowButton() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild disabled={+credits === 0}>
         <Button variant="outline">
           <PlusIcon className="size-4" />
         </Button>

@@ -41,6 +41,16 @@ export const onDiscordContent = (
   }));
 };
 
+export const onNotionContent = (
+  nodeConnection: ConnectionProviderProps,
+  event: React.ChangeEvent<HTMLInputElement>
+) => {
+  nodeConnection.setNotionNode((prev: any) => ({
+    ...prev,
+    content: event.target.value,
+  }));
+};
+
 export const onContentChange = (
   nodeConnection: ConnectionProviderProps,
   nodeType: string,
@@ -50,6 +60,9 @@ export const onContentChange = (
     onSlackContent(nodeConnection, event);
   } else if (nodeType === "Discord") {
     onDiscordContent(nodeConnection, event);
+  } else if (nodeType === "Notion") {
+    // <-- ADD THIS
+    onNotionContent(nodeConnection, event);
   }
 };
 

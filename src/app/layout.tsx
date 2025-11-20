@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
+import { BillingProvider } from "@/providers/billing-provider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -40,7 +41,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <BillingProvider>{children}</BillingProvider>
           </ThemeProvider>
           <Toaster />
         </body>

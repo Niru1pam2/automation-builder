@@ -35,10 +35,10 @@ export default function WorkflowCard({
     if (response) toast.message(response);
   };
   return (
-    <Card className="w-full">
-      <div className="flex items-center justify-between">
-        <CardHeader className="flex flex-col gap-4 space-y-4 flex-1">
-          <Link href={`/workflows/editor/${id}`}>
+    <Link href={`/workflows/editor/${id}`}>
+      <Card className="w-full mb-4">
+        <div className="flex items-center justify-between">
+          <CardHeader className="flex flex-col gap-4  flex-1">
             <div className="flex flex-row gap-2 items-center">
               <Image
                 src={"/googleDrive.png"}
@@ -69,18 +69,18 @@ export default function WorkflowCard({
                 {description}
               </CardDescription>
             </div>
-          </Link>
-        </CardHeader>
+          </CardHeader>
 
-        <div className="flex flex-col items-center gap-2 p-4 pr-6">
-          <Label htmlFor="airplane-mode">{publish ? "On" : "Off"}</Label>
-          <Switch
-            id="airplane-mode"
-            onClick={onPublishFlow}
-            defaultChecked={publish}
-          />
+          <div className="flex flex-col items-center gap-2 p-4 pr-6">
+            <Label htmlFor="airplane-mode">{publish ? "On" : "Off"}</Label>
+            <Switch
+              id="airplane-mode"
+              onClick={onPublishFlow}
+              defaultChecked={publish}
+            />
+          </div>
         </div>
-      </div>
-    </Card>
+      </Card>
+    </Link>
   );
 }

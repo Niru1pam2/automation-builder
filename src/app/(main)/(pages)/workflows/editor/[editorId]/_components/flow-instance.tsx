@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { useNodeConnections } from "@/providers/connections-provider";
+import { Loader2 } from "lucide-react";
 import { usePathname } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   onCreateNodeEdges,
   onFlowPublish,
 } from "../../../../../../../../actions/workflow-connections";
-import { toast } from "sonner";
 
 type Props = {
   children: React.ReactNode;
@@ -18,8 +19,10 @@ export default function FlowInstance({ children, edges, nodes }: Props) {
   const pathname = usePathname();
   const [isFlow, setIsFlow] = useState([]);
   const { nodeConnection } = useNodeConnections();
+  const [loading, setLoading] = useState(false);
 
   const onFlowAutomation = async () => {
+    setLoading(true);
     const flow = await onCreateNodeEdges(
       pathname.split("/").pop()!,
       JSON.stringify(nodes),
@@ -27,10 +30,14 @@ export default function FlowInstance({ children, edges, nodes }: Props) {
       JSON.stringify(isFlow)
     );
 
-    if (flow)
+    if (flow) {
       toast.success("Success", {
         description: flow.message,
       });
+      setLoading(false);
+    }
+
+    setLoading(false);
   };
 
   const onPublishWorkflow = async () => {
@@ -47,7 +54,7 @@ export default function FlowInstance({ children, edges, nodes }: Props) {
     const flows: any = [];
     const connectedEdges = edges.map((edge) => edge.target);
     connectedEdges.map((target) => {
-      nodes.forEach((node) => {
+      nodes.map((node) => {
         if (node.id === target) {
           flows.push(node.type);
         }
@@ -65,7 +72,14 @@ export default function FlowInstance({ children, edges, nodes }: Props) {
     <div className="flex flex-col gap-2">
       <div className="flex gap-3 p-4">
         <Button onClick={onFlowAutomation} disabled={isFlow.length < 1}>
-          Save
+          {loading ? (
+            <>
+              <Loader2 className="animate-spin" />
+              Saving...
+            </>
+          ) : (
+            "Save"
+          )}
         </Button>
 
         <Button onClick={onPublishWorkflow} disabled={isFlow.length < 1}>

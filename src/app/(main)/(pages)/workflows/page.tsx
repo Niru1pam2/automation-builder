@@ -1,4 +1,5 @@
 import { onGetWorkflows } from "../../../../../actions/workflow-connections";
+import MoreCredits from "./_components/more-credits";
 import WorkflowButton from "./_components/WorkflowButton";
 import WorkflowCard from "./_components/WorkflowCard";
 
@@ -11,7 +12,7 @@ export default async function page() {
         Workflows
         <WorkflowButton />
       </h1>
-
+      <MoreCredits />
       {workflows?.length ? (
         workflows.map((flow) => (
           <WorkflowCard

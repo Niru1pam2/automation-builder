@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { BookAIcon, HeadphonesIcon, Upload } from "lucide-react";
+import { BookAIcon, HeadphonesIcon } from "lucide-react";
 import SearchBar from "./upper-info-search-bar";
 
 export default function UpperInfoBar() {

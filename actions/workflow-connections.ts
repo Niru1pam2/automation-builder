@@ -190,3 +190,17 @@ export const onCreateWorkflow = async (name: string, description: string) => {
     return { message: "Oops! Try again!" };
   }
 };
+
+export const onGetNodesEdges = async (flowId: string) => {
+  const nodesEdges = await prisma.workflows.findUnique({
+    where: {
+      id: flowId,
+    },
+    select: {
+      nodes: true,
+      edges: true,
+    },
+  });
+
+  if (nodesEdges?.edges && nodesEdges.nodes) return nodesEdges;
+};

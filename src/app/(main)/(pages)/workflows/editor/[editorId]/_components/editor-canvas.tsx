@@ -33,6 +33,7 @@ import { EditorCanvasDefaultCardTypes } from "@/lib/constants";
 import { LoaderOne } from "@/components/ui/loader";
 import FlowInstance from "./flow-instance";
 import EditorCanvasSidebar from "./editor-canvas-sidebar";
+import { onGetNodesEdges } from "../../../../../../../../actions/workflow-connections";
 
 const initialNodes: EditorNodeType[] = [];
 const initialEdges: { id: string; source: string; target: string }[] = [];
@@ -157,6 +158,23 @@ export default function EditorCanvas() {
     (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
     []
   );
+
+  const onGetWorkflow = async () => {
+    setIsWorkflowLoading(true);
+    const response = await onGetNodesEdges(pathname.split("/").pop()!);
+
+    if (response) {
+      setEdges(JSON.parse(response.edges!));
+      setNodes(JSON.parse(response.nodes!));
+      setIsWorkflowLoading(false);
+    }
+
+    setIsWorkflowLoading(false);
+  };
+
+  useEffect(() => {
+    onGetWorkflow();
+  }, []);
 
   useEffect(() => {
     dispatch({ type: "LOAD_DATA", payload: { edges, elements: nodes } });

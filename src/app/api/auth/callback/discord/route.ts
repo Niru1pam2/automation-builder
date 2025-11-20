@@ -38,6 +38,7 @@ export async function GET(req: NextRequest) {
         (guild: any) => guild.id == output.data.webhook.guild_id
       );
 
+      // CHANGE URL
       return NextResponse.redirect(
         `http://localhost:3000/connections?webhook_id=${output.data.webhook.id}&webhook_url=${output.data.webhook.url}&webhook_name=${output.data.webhook.name}&guild_id=${output.data.webhook.guild_id}&guild_name=${UserGuild[0].name}&channel_id=${output.data.webhook.channel_id}`
       );

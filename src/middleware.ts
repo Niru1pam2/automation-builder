@@ -5,6 +5,7 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   "/",
   "/api(.*)",
+  "/api/drive-activity/notifications",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
